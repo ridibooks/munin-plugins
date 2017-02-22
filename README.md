@@ -4,21 +4,29 @@ Collection of munin plugins
 
 # Installation
 
-git clone https://github.com/genesos/munin-plugins.git
+> git clone https://github.com/ridibooks/munin-plugins.git
+> chmod +x munin-plugins/src/*.sh
+> cp munin-plugins/src/*.sh /etc/munin/plugins
+> service munin-node restart
 
-chmod +x munin-plugins/src/*.sh
+# Installation on ridi
 
-cp munin-plugins/src/*.sh /etc/munin/plugins
+> git clone https://github.com/ridibooks/munin-plugins.git
+> chmod +x munin-plugins/src/*.sh
+> find munin-plugins/src -type f -name '*.sh' -print0 | xargs --null -I{} mv {} {}.ridi.sh
+> rm /etc/munin/plugins/*.ridi.sh
+> cp munin-plugins/src/*.ridi.sh /etc/munin/plugins
+> service munin-node restart
 
-service munin-node restart
+# Plugins
 
-# megaraid.error.sh
+## megaraid.error.sh
 
-##### target
+### target
 
 - Megaraid raid controller error 
 
-##### requirements
+### requirements
 
 - storcli - http://www.lsi.com/support/pages/download-results.aspx?keyword=storcli
 - php
