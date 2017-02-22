@@ -4,11 +4,11 @@ Collection of munin plugins
 
 # Installation
 
-git checkout https://github.com/genesos/munin-plugins.git
+git clone https://github.com/genesos/munin-plugins.git
 
-chmod +x src/*.sh
+chmod +x munin-plugins/src/*.sh
 
-cp src/*.sh /etc/munin/plugins
+cp munin-plugins/src/*.sh /etc/munin/plugins
 
 service munin-node restart
 
