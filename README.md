@@ -34,3 +34,13 @@ service munin-node restart
 
 - storcli - http://www.lsi.com/support/pages/download-results.aspx?keyword=storcli
 - php
+
+## mysql.replication.sh
+
+### target
+
+- Mysql replication status monitor (on | off)
+
+### requirements
+
+- php
