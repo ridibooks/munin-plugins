@@ -1,6 +1,14 @@
 #!/usr/bin/php
 <?php
 
+$output = shell_exec("which mysql");
+if(strlen(trim($output)) <= 0)
+	return;
+
+$output = shell_exec("mysql --defaults-file=/etc/mysql/debian.cnf -e \"SHOW SLAVE STATUS\"");
+if(strlen(trim($output)) <= 0)
+	return;
+
 if ($argv[1] == 'config') {
 	$return = [
 		'graph_title Mysql Replication',
@@ -34,6 +42,8 @@ foreach ($result as $key => $value) {
 	echo "{$key}.value {$value}\n";
 }
 
+return;
+
 function mysql_result_list_to_array($output_raw)
 {
 	/*
@@ -52,4 +62,3 @@ function mysql_result_list_to_array($output_raw)
 
 	return $output;
 }
-

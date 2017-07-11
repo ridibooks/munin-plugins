@@ -1,6 +1,19 @@
 #!/usr/bin/php
 <?php
 
+if(!is_executable('/opt/MegaRAID/storcli/storcli64'))
+	return;
+
+$output = shell_exec("/opt/MegaRAID/storcli/storcli64 show");
+if(strlen(trim($output)) <= 0)
+	return;
+
+if(!preg_match('/Number of Controllers = (\d+)/', $output, $match))
+	return;
+
+if($match[1] <= 0)
+	return;
+
 if($argv[1] == 'config')
 {
 	$return = [
@@ -22,24 +35,22 @@ if($argv[1] == 'config')
 	return;
 }
 
-if (is_file('/opt/MegaRAID/storcli/storcli64')) {
-	$megaraid = shell_exec('/opt/MegaRAID/storcli/storcli64 /c0 show');
+$megaraid = shell_exec('/opt/MegaRAID/storcli/storcli64 /c0 show');
 
-	$disk_states = getStateByMenuForMegaraid($megaraid, 'TOPOLOGY', 7);
-	$result['topology_error'] = $disk_states;
+$disk_states = getStateByMenuForMegaraid($megaraid, 'TOPOLOGY', 7);
+$result['topology_error'] = $disk_states;
 
-	$disk_states = getStateByMenuForMegaraid($megaraid, 'VD LIST', 3);
-	$result['vd_error'] = $disk_states;
+$disk_states = getStateByMenuForMegaraid($megaraid, 'VD LIST', 3);
+$result['vd_error'] = $disk_states;
 
-	$disk_states = getStateByMenuForMegaraid($megaraid, 'PD LIST', 3);
-	$result['pd_error'] = $disk_states;
+$disk_states = getStateByMenuForMegaraid($megaraid, 'PD LIST', 3);
+$result['pd_error'] = $disk_states;
 
-	foreach($result as $key => $states)
-	{
-		$error_states = array_diff($states, ['Optl','Onln']);
-		$error_count = count($error_states);
-		echo "{$key}.value {$error_count}\n";
-	}
+foreach($result as $key => $states)
+{
+	$error_states = array_diff($states, ['Optl','Onln']);
+	$error_count = count($error_states);
+	echo "{$key}.value {$error_count}\n";
 }
 
 function getStateByMenuForMegaraid($string, $key, $state_index)
